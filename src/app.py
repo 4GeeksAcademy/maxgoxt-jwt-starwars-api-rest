@@ -141,11 +141,12 @@ def handle_favoritos():
 
     allfavoritos = Favorito.query.all()
     favoritosList = list(map(lambda p: p.serialize(),allfavoritos))
+    print(favoritosList[0]['planetas'].serialize())
 
     if favoritosList == []:
         return { 'msj' : 'no hay favoritos'}, 404
 
-    return jsonify(favoritosList), 200
+    return favoritosList[0]['usuario'].serialize() #favoritosList.serialize(), 200
 
 """-----------------------------------------------_<Usuario>_-------------------------------------"""
 
