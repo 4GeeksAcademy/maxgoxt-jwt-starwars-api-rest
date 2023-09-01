@@ -178,7 +178,7 @@ def create_fav_planeta(usuario_id, planetas_id):
     existing_favorito = Favorito.query.filter_by(planetas_id=planetas_id, usuario_id=usuario_id).first()
 
     if existing_favorito:
-        return jsonify({"message": "El planeta ya está un favoritos"}), 400
+        return jsonify({"message": "El planeta ya está en favoritos"}), 400
 
     new_favorito = Favorito(
         usuario_id= usuario_id,
@@ -192,6 +192,7 @@ def create_fav_planeta(usuario_id, planetas_id):
     print(new_favorito.serialize())
     return jsonify(new_favorito.serialize()), 200
 
+
 @app.route('/favorito/<int:usuario_id>/vehiculo/<int:vehiculos_id>', methods=['POST'])
 def create_fav_vehiculo(usuario_id, vehiculos_id):
     request_body = json.loads(request.data)
@@ -199,7 +200,7 @@ def create_fav_vehiculo(usuario_id, vehiculos_id):
     existing_favorito = Favorito.query.filter_by(vehiculos_id=vehiculos_id, usuario_id=usuario_id).first()
 
     if existing_favorito:
-        return jsonify({"message": "El vehiculo ya está un favoritos"}), 400
+        return jsonify({"message": "El vehiculo ya está en favoritos"}), 400
 
     new_favorito = Favorito(
         usuario_id= usuario_id,
@@ -220,7 +221,7 @@ def create_fav_personaje(usuario_id, personajes_id):
     existing_favorito = Favorito.query.filter_by(personajes_id=personajes_id, usuario_id=usuario_id).first()
 
     if existing_favorito:
-        return jsonify({"message": "El personaje ya está un favoritos"}), 400
+        return jsonify({"message": "El personaje ya está en favoritos"}), 400
 
     new_favorito = Favorito(
         usuario_id= usuario_id,
