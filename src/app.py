@@ -178,7 +178,7 @@ def create_fav_planeta(usuario_id, planetas_id):
     existing_favorito = Favorito.query.filter_by(planetas_id=planetas_id, usuario_id=usuario_id).first()
 
     if existing_favorito:
-        return jsonify({"message": "El planeta ya existe"}), 400
+        return jsonify({"message": "El planeta ya está un favoritos"}), 400
 
     new_favorito = Favorito(
         usuario_id= usuario_id,
