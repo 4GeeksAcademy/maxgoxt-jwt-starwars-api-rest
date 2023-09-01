@@ -172,12 +172,12 @@ class Favorito(db.Model):
         return {
             "id": self.id,
             "usuario_id": self.usuario_id,
-            "usuario" : self.usuario,
+            # "usuario" : self.usuario,
             "personajes_id": self.personajes_id,
-            "personajes" : self.personajes,
+            # "personajes" : self.personajes,
             "vehiculos_id": self.vehiculos_id,
-            "vehiculos" : self.vehiculos,
+            # "vehiculos" : self.vehiculos,
             "planetas_id": self.planetas_id,
-            "planetas" : self.planetas,
+            # "planetas" : self.planetas,
             # do not serialize the password, its a security breach
         }

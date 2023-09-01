@@ -38,11 +38,11 @@ def sitemap():
     return generate_sitemap(app)
 
 
-
-
-
-
     # endpoints INICIO
+
+
+
+
 
 """-----------------------------------------------_<Personajes>_-------------------------------------"""
 
@@ -56,7 +56,6 @@ def handle_personajes():
         return { 'msj' : 'no hay personajes'}, 404
 
     return jsonify(personajesList), 200
-
 
 
 
@@ -107,7 +106,6 @@ def handle_planetas():
 
 
 
-
 @app.route('/planetas/<int:planetas_id>', methods=['GET'])
 def handle_planetas_id(planetas_id):
 
@@ -135,26 +133,42 @@ def handle_usuarios():
 
 
 
-
-@app.route('/usuarios/favoritos', methods=['GET'])
-def handle_favoritos():
+@app.route('/<usuarios>/favoritos', methods=['GET'])
+def handle_favoritos(usuarios):
 
     allfavoritos = Favorito.query.all()
     favoritosList = list(map(lambda p: p.serialize(),allfavoritos))
-    print(favoritosList[0]['planetas'].serialize())
+    # print(favoritosList[0]['planetas_id'].serialize())
+    # print(favoritosList[0]['usuario'].serialize())
+    print(favoritosList[2])
 
     if favoritosList == []:
         return { 'msj' : 'no hay favoritos'}, 404
 
-    return favoritosList[0]['usuario'].serialize() #favoritosList.serialize(), 200
+    return favoritosList #favoritosList.serialize(), 200
+
+
+
+
+
+@app.route('/favoritos', methods=['GET'])
+def handle_favs():
+
+    allfavoritos = Favorito.query.all()
+    favoritosList = list(map(lambda p: p.serialize(),allfavoritos))
+
+    if favoritosList == []:
+        return { 'msj' : 'no hay usuarios'}, 404
+
+    return favoritosList, 200
 
 """-----------------------------------------------_<Usuario>_-------------------------------------"""
 
+
+
+
+
     # endpoints FINAL
-
-
-
-
 
 @app.route('/user', methods=['GET'])
 def handle_hello():
