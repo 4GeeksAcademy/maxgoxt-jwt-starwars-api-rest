@@ -28,6 +28,7 @@ class Usuario(db.Model):
     apellido = db.Column(db.String(120), unique=True, nullable=False)
     email  = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(80), unique=False, nullable=False)
+    usuario_favoritos = relationship('Favorito', backref='usuario', lazy=True)
 
     def __repr__(self):
         return '<Usuario %r>' % self.id
@@ -38,7 +39,8 @@ class Usuario(db.Model):
             "nombre": self.nombre,
             "apellido": self.apellido,
             "email": self.email,
-            "password": self.password
+            "password": self.password,
+            "usuario_favoritos": list(map(lambda item: item.serialize(),self.usuario_favoritos))
             # do not serialize the password, its a security breach
         }
 
@@ -154,7 +156,6 @@ class Favorito(db.Model):
     id = db.Column(db.Integer, primary_key=True)
 
     usuario_id = Column(Integer, ForeignKey('usuario.id'))
-    usuario = relationship(Usuario)
 
     personajes_id = Column(Integer, ForeignKey('personajes.id'))
     personajes = relationship(Personajes)
@@ -173,11 +174,11 @@ class Favorito(db.Model):
             "id": self.id,
             "usuario_id": self.usuario_id,
             # "usuario" : self.usuario,
-            "personajes_id": self.personajes_id,
+            "personajes_id": None if self.personajes is None else self.personajes.serialize(),
             # "personajes" : self.personajes,
-            "vehiculos_id": self.vehiculos_id,
+            "vehiculos_id": None if self.vehiculos is None else self.vehiculos.serialize(),
             # "vehiculos" : self.vehiculos,
-            "planetas_id": self.planetas_id,
+            "planetas_id": None if self.planetas is None else self.planetas.serialize(),
             # "planetas" : self.planetas,
             # do not serialize the password, its a security breach
         }

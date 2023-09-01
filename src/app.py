@@ -109,7 +109,7 @@ def handle_planetas():
 @app.route('/planetas/<int:planetas_id>', methods=['GET'])
 def handle_planetas_id(planetas_id):
 
-    oneplaneta = Personajes.query.filter_by(id=planetas_id).first() #peter = User.query.filter_by(username='peter').first()
+    oneplaneta = Planetas.query.filter_by(id=planetas_id).first() #peter = User.query.filter_by(username='peter').first()
 
     if oneplaneta is None:
         return { 'msj' : 'El planeta no existe, verifica el ID de la URL'}, 404
@@ -133,19 +133,33 @@ def handle_usuarios():
 
 
 
-@app.route('/<usuarios>/favoritos', methods=['GET'])
-def handle_favoritos(usuarios):
+@app.route('/<int:usuario_id>/favoritos', methods=['GET'])
+def handle_favoritos(usuario_id):
 
-    allfavoritos = Favorito.query.all()
-    favoritosList = list(map(lambda p: p.serialize(),allfavoritos))
+    # allfavoritos = Favorito.query.all()
+    # favoritosList = list(map(lambda p: p.serialize(),allfavoritos))
+    # for favoritos in favoritosList:
+    #     print(favoritos)
+    #     print(favoritos['planetas_id'])
+    #     print(favoritos['usuario_id'])
+    # oneplaneta = Planetas.query.filter_by(id=favoritos['planetas_id']).first()
+    # oneusuario = Usuario.query.filter_by(id=favoritos['usuario_id']).first()
+    # print(oneplaneta.serialize())
+    # print(oneusuario.serialize()['id'])
+
+    # oneusuario = Usuario.query.filter_by(id = favoritosList[0]).first()
     # print(favoritosList[0]['planetas_id'].serialize())
     # print(favoritosList[0]['usuario'].serialize())
-    print(favoritosList[2])
+    # print(favoritosList)
 
-    if favoritosList == []:
-        return { 'msj' : 'no hay favoritos'}, 404
+    allfavoritos = Favorito.query.filter_by(usuario_id=usuario_id).all()
+    favoritosList = list(map(lambda p: p.serialize(),allfavoritos))
+    print(favoritosList)
 
-    return favoritosList #favoritosList.serialize(), 200
+    # if favoritosList == []:
+    #     return { 'msj' : 'no hay favoritos'}, 404
+
+    return jsonify({'results' : favoritosList}),200 #{ 'nombre del usuario' : oneusuario.serialize()['nombre'], 'favoritosList' : favoritosList, 'planet' : oneplaneta.serialize(), 'usuario completo' : oneusuario.serialize()} # favoritosList #favoritosList.serialize(), 200
 
 
 
