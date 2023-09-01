@@ -174,11 +174,11 @@ class Favorito(db.Model):
             "id": self.id,
             "usuario_id": self.usuario_id,
             # "usuario" : self.usuario,
-            "personajes_id": None if self.personajes is None else self.personajes.serialize(),
+            "personaje": None if self.personajes is None else self.personajes.serialize(),
             # "personajes" : self.personajes,
-            "vehiculos_id": None if self.vehiculos is None else self.vehiculos.serialize(),
+            "vehiculo": None if self.vehiculos is None else self.vehiculos.serialize(),
             # "vehiculos" : self.vehiculos,
-            "planetas_id": None if self.planetas is None else self.planetas.serialize(),
+            "planeta": None if self.planetas is None else self.planetas.serialize(),
             # "planetas" : self.planetas,
             # do not serialize the password, its a security breach
         }

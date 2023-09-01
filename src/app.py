@@ -75,12 +75,21 @@ def handle_personajes_id(personajes_id):
 def create_personaje():
     request_body = json.loads(request.data)
 
-    existing_personaje = Personajes.query.filter_by(**request_body).first()
+    existing_personaje = Personajes.query.filter_by(name=request_body["name"]).first()
 
     if existing_personaje:
         return jsonify({"message": "El personaje ya existe"}), 400
 
-    new_personaje = Personajes(**request_body)
+    new_personaje = Personajes(
+        name= request_body['name'],
+        mass= request_body['mass'],
+        hair_color= request_body['hair_color'],
+        skin_color= request_body['skin_color'],
+        eye_color= request_body['eye_color'],
+        birth_year= request_body['birth_year'],
+        gender= request_body['gender'],
+        height= request_body['height']
+        )
     db.session.add(new_personaje)
     db.session.commit()
     
@@ -162,7 +171,26 @@ def handle_favoritos(usuario_id):
     return jsonify({'results' : favoritosList}),200 #{ 'nombre del usuario' : oneusuario.serialize()['nombre'], 'favoritosList' : favoritosList, 'planet' : oneplaneta.serialize(), 'usuario completo' : oneusuario.serialize()} # favoritosList #favoritosList.serialize(), 200
 
 
+@app.route('/favorito/<int:usuario_id>/planeta/<int:planetas_id>', methods=['POST'])
+def create_fav_planeta(usuario_id, planetas_id):
+    request_body = json.loads(request.data)
 
+    existing_favorito = Favorito.query.filter_by(planetas_id=planetas_id).first()
+
+    if existing_favorito:
+        return jsonify({"message": "El planeta ya existe"}), 400
+
+    new_favorito = Favorito(
+        usuario_id= usuario_id,
+        personaje= request_body['personaje'],
+        vehiculo= request_body['vehiculo'],
+        planeta= planetas_id
+    )
+    db.session.add(new_favorito)
+    db.session.commit()
+    
+    print(new_favorito.serialize())
+    return jsonify(new_favorito.serialize()), 200
 
 
 @app.route('/favoritos', methods=['GET'])
