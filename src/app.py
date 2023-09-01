@@ -175,16 +175,16 @@ def handle_favoritos(usuario_id):
 def create_fav_planeta(usuario_id, planetas_id):
     request_body = json.loads(request.data)
 
-    existing_favorito = Favorito.query.filter_by(planetas_id=planetas_id).first()
+    existing_favorito = Favorito.query.filter_by(planetas_id=planetas_id, usuario_id=usuario_id).first()
 
     if existing_favorito:
         return jsonify({"message": "El planeta ya existe"}), 400
 
     new_favorito = Favorito(
         usuario_id= usuario_id,
-        personaje= request_body['personaje'],
-        vehiculo= request_body['vehiculo'],
-        planeta= planetas_id
+        personajes_id= request_body['personaje'],
+        vehiculos_id= request_body['vehiculo'],
+        planetas_id= planetas_id
     )
     db.session.add(new_favorito)
     db.session.commit()
