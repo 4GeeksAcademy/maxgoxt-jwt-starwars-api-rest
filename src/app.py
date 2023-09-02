@@ -200,6 +200,18 @@ def delete_fav_planeta(usuario_id, planetas_id):
 """-----------------------------------------------_<Vehiculos>_-------------------------------------"""
 
 
+@app.route('/vehiculos', methods=['GET'])
+def handle_vehiculos():
+
+    allvehiculos = Vehiculos.query.all()
+    vehiculosList = list(map(lambda p: p.serialize(),allvehiculos))
+
+    if vehiculosList == []:
+        return { 'msj' : 'no hay vehiculos'}, 404
+
+    return jsonify(vehiculosList), 200
+
+
 @app.route('/favorito/<int:usuario_id>/vehiculo/<int:vehiculos_id>', methods=['POST'])
 def create_fav_vehiculo(usuario_id, vehiculos_id):
 
