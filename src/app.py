@@ -59,10 +59,10 @@ def handle_personajes():
 
 
 
-@app.route('/personajes/<int:personajes_id>', methods=['GET'])
-def handle_personajes_id(personajes_id):
+@app.route('/personaje/<int:personaje_id>', methods=['GET'])
+def handle_personajes_id(personaje_id):
 
-    onepersonaje = Personajes.query.filter_by(id=personajes_id).first() #peter = User.query.filter_by(username='peter').first()
+    onepersonaje = Personajes.query.filter_by(id=personaje_id).first()
 
     if onepersonaje is None:
         return { 'msj' : 'El personaje no existe, verifica el ID de la URL'}, 404
@@ -150,10 +150,10 @@ def handle_planetas():
 
 
 
-@app.route('/planetas/<int:planetas_id>', methods=['GET'])
-def handle_planetas_id(planetas_id):
+@app.route('/planeta/<int:planeta_id>', methods=['GET'])
+def handle_planeta_id(planeta_id):
 
-    oneplaneta = Planetas.query.filter_by(id=planetas_id).first() #peter = User.query.filter_by(username='peter').first()
+    oneplaneta = Planetas.query.filter_by(id=planeta_id).first()
 
     if oneplaneta is None:
         return { 'msj' : 'El planeta no existe, verifica el ID de la URL'}, 404
@@ -210,6 +210,17 @@ def handle_vehiculos():
         return { 'msj' : 'no hay vehiculos'}, 404
 
     return jsonify(vehiculosList), 200
+
+
+@app.route('/vehiculo/<int:vehiculo_id>', methods=['GET'])
+def handle_vehiculo_id(vehiculo_id):
+
+    onevehiculo = Vehiculos.query.filter_by(id=vehiculo_id).first()
+
+    if onevehiculo is None:
+        return { 'msj' : 'El vehiculo no existe, verifica el ID de la URL'}, 404
+
+    return jsonify(onevehiculo.serialize()), 200
 
 
 @app.route('/favorito/<int:usuario_id>/vehiculo/<int:vehiculos_id>', methods=['POST'])
