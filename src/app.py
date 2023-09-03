@@ -59,7 +59,7 @@ def handle_personajes():
     personajesList = list(map(lambda p: p.serialize(),allpersonajes))
 
     if personajesList == []:
-        return { 'msj' : 'no hay personajes'}, 404
+        return jsonify({'msj' : 'no hay personajes'}), 404
 
     return jsonify(personajesList), 200
 
@@ -71,7 +71,7 @@ def handle_personajes_id(personaje_id):
     onepersonaje = Personajes.query.filter_by(id=personaje_id).first()
 
     if onepersonaje is None:
-        return { 'msj' : 'El personaje no existe'}, 404
+        return jsonify({'msj' : 'El personaje no existe'}), 404
 
     return jsonify(onepersonaje.serialize()), 200
 
@@ -139,7 +139,6 @@ def create_fav_personaje(usuario_id, personajes_id):
     db.session.add(new_favorito)
     db.session.commit()
     
-    print(new_favorito.serialize())
     return jsonify(new_favorito.serialize()), 200
 
 
@@ -174,7 +173,7 @@ def handle_planetas():
     planetasList = list(map(lambda p: p.serialize(),allplanetas))
 
     if planetasList == []:
-        return { 'msj' : 'no hay planetas'}, 404
+        return jsonify({'msj' : 'no hay planetas'}), 404
 
     return jsonify(planetasList), 200
 
@@ -186,7 +185,7 @@ def handle_planeta_id(planeta_id):
     oneplaneta = Planetas.query.filter_by(id=planeta_id).first()
 
     if oneplaneta is None:
-        return { 'msj' : 'El planeta no existe'}, 404
+        return jsonify({'msj' : 'El planeta no existe'}), 404
 
     return jsonify(oneplaneta.serialize()), 200
 
@@ -255,7 +254,6 @@ def create_fav_planeta(usuario_id, planetas_id):
     db.session.add(new_favorito)
     db.session.commit()
     
-    print(new_favorito.serialize())
     return jsonify(new_favorito.serialize()), 200
 
 
@@ -290,7 +288,7 @@ def handle_vehiculos():
     vehiculosList = list(map(lambda p: p.serialize(),allvehiculos))
 
     if vehiculosList == []:
-        return { 'msj' : 'no hay vehiculos'}, 404
+        return jsonify({'msj' : 'no hay vehiculos'}), 404
 
     return jsonify(vehiculosList), 200
 
@@ -302,7 +300,7 @@ def handle_vehiculo_id(vehiculo_id):
     onevehiculo = Vehiculos.query.filter_by(id=vehiculo_id).first()
 
     if onevehiculo is None:
-        return { 'msj' : 'El vehiculo no existe'}, 404
+        return jsonify({'msj' : 'El vehiculo no existe'}), 404
 
     return jsonify(onevehiculo.serialize()), 200
 
@@ -375,7 +373,6 @@ def create_fav_vehiculo(usuario_id, vehiculos_id):
     db.session.add(new_favorito)
     db.session.commit()
     
-    print(new_favorito.serialize())
     return jsonify(new_favorito.serialize()), 200
 
 
@@ -410,10 +407,20 @@ def handle_usuarios():
     usuariosList = list(map(lambda p: p.serialize(),allusuarios))
 
     if usuariosList == []:
-        return { 'msj' : 'no hay usuarios'}, 404
+        return jsonify({'msj' : 'no hay usuarios'}), 404
 
     return jsonify(usuariosList), 200
 
+
+@app.route('/usuario/<int:usuario_id>', methods=['GET'])
+def handle_usuario_id(usuario_id):
+
+    oneusuario = Usuario.query.filter_by(id=usuario_id).first()
+
+    if oneusuario is None:
+        return jsonify({'msj' : 'El usuario no existe'}), 404
+
+    return jsonify(oneusuario.serialize()), 200
 
 
 @app.route('/<int:usuario_id>/favoritos', methods=['GET'])
@@ -421,7 +428,6 @@ def handle_favoritos(usuario_id):
 
     allfavoritos = Favorito.query.filter_by(usuario_id=usuario_id).all()
     favoritosList = list(map(lambda p: p.serialize(),allfavoritos))
-    print(favoritosList)
 
     if favoritosList == []:
         return { 'msj' : 'no hay favoritos'}, 404
@@ -436,7 +442,7 @@ def handle_favs():
     favoritosList = list(map(lambda p: p.serialize(),allfavoritos))
 
     if favoritosList == []:
-        return { 'msj' : 'no hay usuarios'}, 404
+        return jsonify({'msj' : 'no hay usuarios'}), 404
 
     return favoritosList, 200
 
@@ -448,12 +454,17 @@ def handle_favs():
 
 @app.route("/login", methods=["POST"])
 def login():
-    username = request.json.get("username", None)
+    email = request.json.get("email", None)
     password = request.json.get("password", None)
-    if username != "test" or password != "test":
-        return jsonify({"msg": "Bad username or password"}), 401
+    usuario_query = Usuario.query.filter_by(email=email).first()
 
-    access_token = create_access_token(identity=username)
+    if usuario_query is None:
+        return jsonify({"msg": "No se econtró una cuenta vinculada a ese email"}), 404
+
+    elif email != usuario_query.serialize()['email'] or password != usuario_query.serialize()['password']:
+        return jsonify({"msg": "Contraseña incorrecta"}), 401
+
+    access_token = create_access_token(identity=email)
     return jsonify(access_token=access_token)
 
 
