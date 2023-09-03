@@ -9,6 +9,7 @@ from flask_cors import CORS
 from utils import APIException, generate_sitemap
 from admin import setup_admin
 from models import db, Personajes, Planetas, Favorito, Vehiculos, Usuario
+from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required, JWTManager
 import json
 #from models import Person
 
@@ -25,6 +26,11 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 MIGRATE = Migrate(app, db)
 db.init_app(app)
 CORS(app)
+
+# Setup the Flask-JWT-Extended extension
+app.config["JWT_SECRET_KEY"] = "super-secret"  # Change this!
+jwt = JWTManager(app)
+
 setup_admin(app)
 
 # Handle/serialize errors like a JSON object
@@ -277,32 +283,14 @@ def handle_usuarios():
 @app.route('/<int:usuario_id>/favoritos', methods=['GET'])
 def handle_favoritos(usuario_id):
 
-    # allfavoritos = Favorito.query.all()
-    # favoritosList = list(map(lambda p: p.serialize(),allfavoritos))
-    # for favoritos in favoritosList:
-    #     print(favoritos)
-    #     print(favoritos['planetas_id'])
-    #     print(favoritos['usuario_id'])
-    # oneplaneta = Planetas.query.filter_by(id=favoritos['planetas_id']).first()
-    # oneusuario = Usuario.query.filter_by(id=favoritos['usuario_id']).first()
-    # print(oneplaneta.serialize())
-    # print(oneusuario.serialize()['id'])
-
-    # oneusuario = Usuario.query.filter_by(id = favoritosList[0]).first()
-    # print(favoritosList[0]['planetas_id'].serialize())
-    # print(favoritosList[0]['usuario'].serialize())
-    # print(favoritosList)
-
     allfavoritos = Favorito.query.filter_by(usuario_id=usuario_id).all()
     favoritosList = list(map(lambda p: p.serialize(),allfavoritos))
     print(favoritosList)
 
-    # if favoritosList == []:
-    #     return { 'msj' : 'no hay favoritos'}, 404
+    if favoritosList == []:
+        return { 'msj' : 'no hay favoritos'}, 404
 
-    return jsonify({'results' : favoritosList}),200 #{ 'nombre del usuario' : oneusuario.serialize()['nombre'], 'favoritosList' : favoritosList, 'planet' : oneplaneta.serialize(), 'usuario completo' : oneusuario.serialize()} # favoritosList #favoritosList.serialize(), 200
-
-
+    return jsonify({'results' : favoritosList}),200
 
 
 
@@ -320,6 +308,21 @@ def handle_favs():
 """-----------------------------------------------_<Usuario>_-------------------------------------"""
 
 
+"""-----------------------------------------------_<Login>_-------------------------------------"""
+
+
+@app.route("/login", methods=["POST"])
+def login():
+    username = request.json.get("username", None)
+    password = request.json.get("password", None)
+    if username != "test" or password != "test":
+        return jsonify({"msg": "Bad username or password"}), 401
+
+    access_token = create_access_token(identity=username)
+    return jsonify(access_token=access_token)
+
+
+"""-----------------------------------------------_<Login>_-------------------------------------"""
 
 
 
