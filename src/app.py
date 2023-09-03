@@ -84,7 +84,7 @@ def create_personaje():
     existing_personaje = Personajes.query.filter_by(name=request_body["name"]).first()
 
     if existing_personaje:
-        return jsonify({"message": "El personaje ya existe"}), 404
+        return jsonify({"msj": "El personaje ya existe"}), 404
 
     new_personaje = Personajes(
         name= request_body['name'],
@@ -110,9 +110,9 @@ def delete_personaje(personaje_id):
     if existing_personaje:
         db.session.delete(existing_personaje)
         db.session.commit()
-        return jsonify({"message": "El personaje ha sido eliminado"}), 200
+        return jsonify({"msj": "El personaje ha sido eliminado"}), 200
 
-    return jsonify({"message": "El personaje que intenta eliminar no existe"}), 404
+    return jsonify({"msj": "El personaje que intenta eliminar no existe"}), 404
 
 
 
@@ -122,13 +122,13 @@ def create_fav_personaje(usuario_id, personajes_id):
     existing_favorito = Favorito.query.filter_by(personajes_id=personajes_id, usuario_id=usuario_id).first()
 
     if existing_favorito:
-        return jsonify({"message": "El personaje ya está en favoritos"}), 404
+        return jsonify({"msj": "El personaje ya está en favoritos"}), 404
     
     elif not Usuario.query.filter_by(id=usuario_id).first():
-        return jsonify({"message": "El usuario al que le quiere añadir un favoritos no existe"}), 404
+        return jsonify({"msj": "El usuario al que le quiere añadir un favoritos no existe"}), 404
     
     elif not Personajes.query.filter_by(id=personajes_id).first():
-        return jsonify({"message": "El personaje que quiere añadir a favoritos no existe"}), 404
+        return jsonify({"msj": "El personaje que quiere añadir a favoritos no existe"}), 404
     
     new_favorito = Favorito(
         usuario_id= usuario_id,
@@ -150,15 +150,15 @@ def delete_fav_personaje(usuario_id, personajes_id):
     if existing_favorito:
         db.session.delete(existing_favorito)
         db.session.commit()
-        return jsonify({"message": "El personaje ha sido eliminado de favoritos"}), 200
+        return jsonify({"msj": "El personaje ha sido eliminado de favoritos"}), 200
     
     elif not Usuario.query.filter_by(id=usuario_id).first():
-        return jsonify({"message": "El usuario no existe"}), 404
+        return jsonify({"msj": "El usuario no existe"}), 404
     
     elif not Personajes.query.filter_by(id=personajes_id).first():
-        return jsonify({"message": "El personaje que quiere eliminar de favoritos no existe"}), 404
+        return jsonify({"msj": "El personaje que quiere eliminar de favoritos no existe"}), 404
     
-    return jsonify({"message": "El personaje no está en los favoritos"}), 404
+    return jsonify({"msj": "El personaje no está en los favoritos"}), 404
 
 
 """-----------------------------------------------_<Personajes>_-------------------------------------"""
@@ -198,7 +198,7 @@ def create_planeta():
     existing_planeta = Planetas.query.filter_by(name=request_body["name"]).first()
 
     if existing_planeta:
-        return jsonify({"message": "El planeta ya existe"}), 404
+        return jsonify({"msj": "El planeta ya existe"}), 404
 
     new_planeta = Planetas(
         name=request_body['name'],
@@ -225,9 +225,9 @@ def delete_planeta(planeta_id):
     if existing_planeta:
         db.session.delete(existing_planeta)
         db.session.commit()
-        return jsonify({"message": "El planeta ha sido eliminado"}), 200
+        return jsonify({"msj": "El planeta ha sido eliminado"}), 200
 
-    return jsonify({"message": "El planeta que intenta eliminar no existe"}), 404
+    return jsonify({"msj": "El planeta que intenta eliminar no existe"}), 404
 
 
 
@@ -237,13 +237,13 @@ def create_fav_planeta(usuario_id, planetas_id):
     existing_favorito = Favorito.query.filter_by(planetas_id=planetas_id, usuario_id=usuario_id).first()
 
     if existing_favorito:
-        return jsonify({"message": "El planeta ya está en favoritos"}), 404
+        return jsonify({"msj": "El planeta ya está en favoritos"}), 404
     
     elif not Usuario.query.filter_by(id=usuario_id).first():
-        return jsonify({"message": "El usuario al que le quiere añadir un favoritos no existe"}), 404
+        return jsonify({"msj": "El usuario al que le quiere añadir un favoritos no existe"}), 404
     
     elif not Planetas.query.filter_by(id=planetas_id).first():
-        return jsonify({"message": "El planeta que quiere añadir a favoritos no existe"}), 404
+        return jsonify({"msj": "El planeta que quiere añadir a favoritos no existe"}), 404
 
     new_favorito = Favorito(
         usuario_id= usuario_id,
@@ -266,15 +266,15 @@ def delete_fav_planeta(usuario_id, planetas_id):
     if existing_favorito:
         db.session.delete(existing_favorito)
         db.session.commit()
-        return jsonify({"message": "El planeta ha sido eliminado de favoritos"}), 200
+        return jsonify({"msj": "El planeta ha sido eliminado de favoritos"}), 200
     
     elif not Usuario.query.filter_by(id=usuario_id).first():
-        return jsonify({"message": "El usuario no existe"}), 404
+        return jsonify({"msj": "El usuario no existe"}), 404
     
     elif not Planetas.query.filter_by(id=planetas_id).first():
-        return jsonify({"message": "El planeta que quiere eliminar de favoritos no existe"}), 404
+        return jsonify({"msj": "El planeta que quiere eliminar de favoritos no existe"}), 404
     
-    return jsonify({"message": "El planeta no está en favoritos"}), 404
+    return jsonify({"msj": "El planeta no está en favoritos"}), 404
 
 """-----------------------------------------------_<Planetas>_-------------------------------------"""
 
@@ -313,7 +313,7 @@ def create_vehiculo():
     existing_vehiculo = Vehiculos.query.filter_by(name=request_body["name"]).first()
 
     if existing_vehiculo:
-        return jsonify({"message": "El vehiculo ya existe"}), 404
+        return jsonify({"msj": "El vehiculo ya existe"}), 404
 
     new_vehiculo = Vehiculos(
         name=request_body['name'],
@@ -344,9 +344,9 @@ def delete_vehiculo(vehiculo_id):
     if existing_vehiculo:
         db.session.delete(existing_vehiculo)
         db.session.commit()
-        return jsonify({"message": "El vehiculo ha sido eliminado"}), 200
+        return jsonify({"msj": "El vehiculo ha sido eliminado"}), 200
 
-    return jsonify({"message": "El vehiculo que intenta eliminar no existe"}), 404
+    return jsonify({"msj": "El vehiculo que intenta eliminar no existe"}), 404
 
 
 
@@ -356,13 +356,13 @@ def create_fav_vehiculo(usuario_id, vehiculos_id):
     existing_favorito = Favorito.query.filter_by(vehiculos_id=vehiculos_id, usuario_id=usuario_id).first()
 
     if existing_favorito:
-        return jsonify({"message": "El vehiculo ya está en favoritos"}), 404
+        return jsonify({"msj": "El vehiculo ya está en favoritos"}), 404
     
     elif not Usuario.query.filter_by(id=usuario_id).first():
-        return jsonify({"message": "El usuario al que le quiere añadir un favoritos no existe"}), 404
+        return jsonify({"msj": "El usuario al que le quiere añadir un favoritos no existe"}), 404
     
     elif not Vehiculos.query.filter_by(id=vehiculos_id).first():
-        return jsonify({"message": "El vehiculo que quiere añadir a favoritos no existe"}), 404
+        return jsonify({"msj": "El vehiculo que quiere añadir a favoritos no existe"}), 404
     
     new_favorito = Favorito(
         usuario_id= usuario_id,
@@ -385,15 +385,15 @@ def delete_fav_vehiculo(usuario_id, vehiculos_id):
     if existing_favorito:
         db.session.delete(existing_favorito)
         db.session.commit()
-        return jsonify({"message": "El vehiculo ha sido eliminado de favoritos"}), 200
+        return jsonify({"msj": "El vehiculo ha sido eliminado de favoritos"}), 200
     
     elif not Usuario.query.filter_by(id=usuario_id).first():
-        return jsonify({"message": "El usuario no existe"}), 404
+        return jsonify({"msj": "El usuario no existe"}), 404
     
     elif not Vehiculos.query.filter_by(id=vehiculos_id).first():
-        return jsonify({"message": "El vehiculo que quiere eliminar de favoritos no existe"}), 404
+        return jsonify({"msj": "El vehiculo que quiere eliminar de favoritos no existe"}), 404
     
-    return jsonify({"message": "El vehiculo ya está en favoritos"}), 404
+    return jsonify({"msj": "El vehiculo ya está en favoritos"}), 404
 
 """-----------------------------------------------_<Vehiculos>_-------------------------------------"""
 
@@ -412,6 +412,7 @@ def handle_usuarios():
     return jsonify(usuariosList), 200
 
 
+
 @app.route('/usuario/<int:usuario_id>', methods=['GET'])
 def handle_usuario_id(usuario_id):
 
@@ -421,6 +422,7 @@ def handle_usuario_id(usuario_id):
         return jsonify({'msj' : 'El usuario no existe'}), 404
 
     return jsonify(oneusuario.serialize()), 200
+
 
 
 @app.route('/<int:usuario_id>/favoritos', methods=['GET'])
@@ -433,6 +435,7 @@ def handle_favoritos(usuario_id):
         return { 'msj' : 'no hay favoritos'}, 404
 
     return jsonify({'results' : favoritosList}),200
+
 
 
 @app.route('/favoritos', methods=['GET'])
@@ -459,16 +462,33 @@ def login():
     usuario_query = Usuario.query.filter_by(email=email).first()
 
     if usuario_query is None:
-        return jsonify({"msg": "No se econtró una cuenta vinculada a ese email"}), 404
+        return jsonify({"msj": "No se econtró una cuenta vinculada al email dado"}), 404
 
     elif email != usuario_query.serialize()['email'] or password != usuario_query.serialize()['password']:
-        return jsonify({"msg": "Contraseña incorrecta"}), 401
+        return jsonify({"msj": "Contraseña incorrecta"}), 401
 
     access_token = create_access_token(identity=email)
     return jsonify(access_token=access_token)
 
 
 """-----------------------------------------------_<Login>_-------------------------------------"""
+
+"""-----------------------------------------------_<Perfil>_-------------------------------------"""
+
+
+# Protect a route with jwt_required, which will kick out requests
+# without a valid JWT present.
+@app.route("/perfil", methods=["GET"])
+@jwt_required()
+def perfil():
+    # Access the identity of the current user with get_jwt_identity
+    current_user = get_jwt_identity()
+    return jsonify(logged_in_as=current_user), 200
+
+
+"""-----------------------------------------------_<Perfil>_-------------------------------------"""
+
+
 
 
 
@@ -478,7 +498,7 @@ def login():
 def handle_hello():
 
     response_body = {
-        "msg": "Hello, this is your GET /user response"
+        "msj": "Hello, this is your GET /user response"
     }
 
     return jsonify(response_body), 200
