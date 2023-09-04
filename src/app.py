@@ -451,6 +451,32 @@ def handle_favs():
 
 """-----------------------------------------------_<Usuario>_-------------------------------------"""
 
+"""-----------------------------------------------_<SingUp>_-------------------------------------"""
+
+
+
+@app.route('/signup', methods=['POST'])
+def signup():
+    request_body = json.loads(request.data)
+
+    existing_usuario = Usuario.query.filter_by(email=request_body["email"]).first()
+
+    if existing_usuario:
+        return jsonify({"msj": "El usuario ya existe"}), 404
+
+    new_usuario = Usuario(
+        nombre=request_body["nombre"],
+        apellido=request_body["apellido"],
+        email=request_body["email"],
+        password=request_body["password"]
+        )
+    db.session.add(new_usuario)
+    db.session.commit()
+    return jsonify(new_usuario.serialize()), 200
+
+
+
+"""-----------------------------------------------_<SingUp>_-------------------------------------"""
 
 """-----------------------------------------------_<Login>_-------------------------------------"""
 
