@@ -491,7 +491,7 @@ def login():
         return jsonify({"msj": "No se econtró una cuenta vinculada al email dado"}), 404
 
     elif email != usuario_query.serialize()['email'] or password != usuario_query.serialize()['password']:
-        return jsonify({"msj": "Contraseña incorrecta"}), 401
+        return jsonify({"msj": "Contraseña incorrecta"}), 404
 
     access_token = create_access_token(identity=email)
     return jsonify(access_token=access_token)
@@ -510,6 +510,15 @@ def perfil():
     # Access the identity of the current user with get_jwt_identity
     current_user = get_jwt_identity()
     return jsonify(logged_in_as=current_user), 200
+
+
+
+@app.route("/valid-token", methods=["GET"])
+@jwt_required()
+def valid_token():
+    # Access the identity of the current user with get_jwt_identity
+    current_user = get_jwt_identity()
+    return jsonify({ 'is_logged' : True}), 200
 
 
 """-----------------------------------------------_<Perfil>_-------------------------------------"""
